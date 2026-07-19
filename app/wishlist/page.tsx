@@ -69,15 +69,16 @@ export default function WishlistPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {wishlist.map((item) => (
+              <Link key={item.id} href={`/product/${item.id}`}>
               <motion.div
-                key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-secondary rounded group cursor-pointer overflow-hidden"
+                whileHover={{ scale: 1.02 }}
+                className="bg-secondary rounded group cursor-pointer overflow-hidden h-full transition-transform"
               >
                 <div className="aspect-square bg-background mb-4 relative overflow-hidden">
                   <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <p className="text-muted-foreground">{item.name}</p>
+                    <p className="text-muted-foreground text-center px-4">{item.name}</p>
                   </div>
                   <motion.button
                     whileHover={{ scale: 1.2 }}
@@ -92,17 +93,19 @@ export default function WishlistPage() {
                 <div className="p-4">
                   <h3 className="font-heading font-bold mb-2 line-clamp-2">{item.name}</h3>
                   <p className="text-accent font-bold mb-4">₹{item.price.toLocaleString()}</p>
-                  <Link href={`/product/${item.id}`}>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-primary text-primary-foreground py-2 font-bold hover:bg-opacity-80 transition-all"
-                    >
-                      View Product
-                    </motion.button>
-                  </Link>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-primary text-primary-foreground py-2 font-bold hover:bg-opacity-80 transition-all"
+                    onClick={(e) => {
+                      e.preventDefault()
+                    }}
+                  >
+                    View Product
+                  </motion.button>
                 </div>
               </motion.div>
+              </Link>
             ))}
           </div>
         )}

@@ -46,9 +46,12 @@ export default function CategoriesGrid() {
           transition={{ duration: 0.6 }}
           className="mb-16 md:mb-24"
         >
-          <h2 className="text-5xl md:text-7xl font-heading font-bold tracking-tight">
-            Shop by Category
+          <h2 className="text-5xl md:text-7xl font-heading font-bold tracking-tight mb-4">
+            Explore All Products
           </h2>
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl">
+            Discover our comprehensive collection of premium streetwear designed for the modern urbanite. Browse by category to find your perfect fit.
+          </p>
         </motion.div>
 
         {/* Categories Grid */}

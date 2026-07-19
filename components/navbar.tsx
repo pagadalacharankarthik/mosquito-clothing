@@ -57,7 +57,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <motion.div whileHover={{ scale: 1.05 }} className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16">
+          <motion.div whileHover={{ scale: 1.05 }} className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28">
             <Image
               src="/mosquito-logo.svg"
               alt="MOSQUITO Logo"

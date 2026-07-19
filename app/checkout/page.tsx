@@ -85,8 +85,8 @@ export default function CheckoutPage() {
     // Encode message for URL
     const encodedMessage = encodeURIComponent(message)
 
-    // WhatsApp URL (using default WhatsApp Business number or personal)
-    const whatsappNumber = '919876543210' // Replace with your WhatsApp number
+    // WhatsApp URL - Contact number for orders
+    const whatsappNumber = '919876543210' // +91 987654321 (format: country code + number)
     const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
 
     // Open WhatsApp

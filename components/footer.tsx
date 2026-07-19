@@ -54,7 +54,7 @@ export default function Footer() {
             <Link href="/" className="block mb-6">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="relative w-12 h-12"
+                className="relative w-20 h-20 md:w-24 md:h-24"
               >
                 <Image
                   src="/mosquito-logo.svg"
@@ -79,19 +79,15 @@ export default function Footer() {
               transition={{ delay: index * 0.1 }}
             >
               <h4 
-                className="font-heading font-bold mb-4 text-accent uppercase text-sm tracking-wide"
-                style={{
-                  textShadow: '1px 1px 0 #000, 2px 2px 0 rgba(0,0,0,0.3)',
-                  WebkitTextStroke: '0.5px #000',
-                }}
+                className="font-heading font-bold mb-4 text-white uppercase text-base tracking-wide"
               >
                 {category}
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href}>
-                      <span className="text-sm text-white hover:text-accent transition-colors font-medium">
+                      <span className="text-base text-white hover:text-accent transition-colors font-regular">
                         {link.label}
                       </span>
                     </Link>
