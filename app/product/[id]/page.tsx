@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Heart, Share2, ShoppingBag, RotateCcw } from 'lucide-react'
+import { Heart, Share2, ShoppingBag } from 'lucide-react'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import { useCart } from '@/lib/cart-context'
 
 const products: any = {
   '1': {
@@ -46,10 +48,29 @@ const products: any = {
     reviews: 145,
     features: ['Premium fabric blend', 'Perfect fit', 'Easy to style', 'Long-lasting quality'],
   },
+  '3': {
+    id: 3,
+    name: 'Cargo Pants',
+    price: 2499,
+    originalPrice: 2999,
+    category: 'Cargo Pants',
+    description: 'Premium cargo pants with multiple pockets and comfortable fit.',
+    images: ['/placeholder.jpg', '/placeholder.jpg'],
+    colors: ['Black', 'Khaki', 'Olive'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    inStock: true,
+    rating: 4.7,
+    reviews: 189,
+    features: ['Multiple pockets', 'Durable fabric', 'Comfortable fit'],
+  },
 }
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = products[params.id]
+export default function ProductDetailPage() {
+  const params = useParams()
+  const { addToCart } = useCart()
+  const productId = params.id as string
+  const product = products[productId]
+
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [selectedColor, setSelectedColor] = useState<string>(product?.colors?.[0] || 'Black')
   const [quantity, setQuantity] = useState(1)
@@ -73,8 +94,25 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
 
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert('Please select a size')
+      return
+    }
+
+    addToCart({
+      id: `${product.id}-${selectedColor}-${selectedSize}`,
+      name: product.name,
+      price: product.price,
+      color: selectedColor,
+      size: selectedSize,
+      quantity,
+      image: '/placeholder.jpg',
+    })
+  }
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground pb-20 md:pb-0">
       <Navbar />
 
       <motion.main
@@ -88,20 +126,20 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex items-center space-x-2 text-sm mb-12 text-muted-foreground"
+            className="flex items-center space-x-2 text-sm mb-12 text-muted-foreground overflow-x-auto"
           >
-            <Link href="/shop" className="hover:text-accent">
+            <Link href="/shop" className="hover:text-accent whitespace-nowrap">
               Shop
             </Link>
             <span>/</span>
-            <Link href={`/shop?category=${product.category}`} className="hover:text-accent">
+            <Link href={`/shop?category=${product.category}`} className="hover:text-accent whitespace-nowrap">
               {product.category}
             </Link>
             <span>/</span>
-            <span className="text-foreground font-bold">{product.name}</span>
+            <span className="text-foreground font-bold whitespace-nowrap">{product.name}</span>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
             {/* Images */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
               <div className="space-y-4">
@@ -111,19 +149,19 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full aspect-square bg-secondary flex items-center justify-center border border-border"
+                  className="w-full aspect-square bg-secondary flex items-center justify-center border border-border rounded"
                 >
                   <span className="text-muted-foreground">Main Image {mainImageIndex + 1}</span>
                 </motion.div>
 
                 {/* Thumbnail Gallery */}
                 <div className="grid grid-cols-4 gap-2">
-                  {product.images.map((img: string, idx: number) => (
+                  {product.images.map((_img: string, idx: number) => (
                     <motion.button
                       key={idx}
                       onClick={() => setMainImageIndex(idx)}
                       whileHover={{ scale: 1.05 }}
-                      className={`aspect-square bg-secondary flex items-center justify-center border-2 transition-colors ${
+                      className={`aspect-square bg-secondary flex items-center justify-center border-2 transition-colors rounded ${
                         mainImageIndex === idx ? 'border-accent' : 'border-transparent'
                       }`}
                     >
@@ -139,23 +177,23 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8"
+              className="space-y-6 md:space-y-8"
             >
               {/* Header */}
               <div>
-                <p className="text-xs uppercase tracking-widest text-accent mb-2">{product.category}</p>
-                <h1 className="text-5xl font-heading font-bold mb-4">{product.name}</h1>
+                <p className="text-xs uppercase tracking-widest text-accent mb-2 font-bold">{product.category}</p>
+                <h1 className="text-3xl md:text-5xl font-heading font-bold mb-4">{product.name}</h1>
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-1">
-                    <span className="text-yellow-500">★★★★★</span>
+                    <span className="text-lg">★★★★★</span>
                     <span className="text-sm text-muted-foreground">({product.reviews} reviews)</span>
                   </div>
                 </div>
               </div>
 
               {/* Pricing */}
-              <div className="flex items-end space-x-4">
-                <span className="text-4xl font-bold">₹{product.price}</span>
+              <div className="flex items-end space-x-4 flex-wrap gap-2">
+                <span className="text-3xl md:text-4xl font-bold">₹{product.price}</span>
                 {discount > 0 && (
                   <>
                     <span className="text-lg line-through text-muted-foreground">₹{product.originalPrice}</span>
@@ -171,14 +209,15 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
               {/* Color Selection */}
               <div className="space-y-3">
-                <label className="text-sm font-bold">COLOR</label>
-                <div className="flex gap-3">
+                <label className="text-sm font-bold">COLOR: {selectedColor}</label>
+                <div className="flex gap-3 flex-wrap">
                   {product.colors.map((color: string) => (
                     <motion.button
                       key={color}
                       onClick={() => setSelectedColor(color)}
                       whileHover={{ scale: 1.05 }}
-                      className={`px-6 py-3 border-2 font-bold text-sm transition-all ${
+                      whileTap={{ scale: 0.95 }}
+                      className={`px-4 md:px-6 py-2 md:py-3 border-2 font-bold text-sm transition-all ${
                         selectedColor === color
                           ? 'border-accent bg-accent text-black'
                           : 'border-border hover:border-accent'
@@ -192,14 +231,15 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
               {/* Size Selection */}
               <div className="space-y-3">
-                <label className="text-sm font-bold">SIZE</label>
-                <div className="grid grid-cols-3 gap-2">
+                <label className="text-sm font-bold">SIZE: {selectedSize || 'Select'}</label>
+                <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
                   {product.sizes.map((size: string) => (
                     <motion.button
                       key={size}
                       onClick={() => setSelectedSize(size)}
                       whileHover={{ scale: 1.05 }}
-                      className={`py-3 border-2 font-bold transition-all ${
+                      whileTap={{ scale: 0.95 }}
+                      className={`py-2 md:py-3 border-2 font-bold transition-all ${
                         selectedSize === size
                           ? 'border-accent bg-accent text-black'
                           : 'border-border hover:border-accent'
@@ -220,14 +260,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 <div className="flex items-center space-x-4 border border-border w-fit">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-2 hover:bg-secondary transition-colors"
+                    className="px-4 py-2 hover:bg-secondary transition-colors font-bold"
                   >
                     −
                   </button>
                   <span className="px-4 font-bold">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-2 hover:bg-secondary transition-colors"
+                    className="px-4 py-2 hover:bg-secondary transition-colors font-bold"
                   >
                     +
                   </button>
@@ -235,12 +275,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               </div>
 
               {/* Actions */}
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col md:flex-row gap-3 md:gap-4 pt-4">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={handleAddToCart}
                   disabled={!selectedSize}
-                  className="flex-1 px-8 py-4 bg-accent text-black font-heading font-bold tracking-wide hover:bg-opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 px-6 md:px-8 py-3 md:py-4 bg-accent text-black font-heading font-bold tracking-wide hover:bg-opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   <ShoppingBag size={20} />
                   Add to Bag
@@ -249,7 +290,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsFavorite(!isFavorite)}
-                  className={`p-4 border-2 transition-all ${
+                  className={`p-3 md:p-4 border-2 transition-all ${
                     isFavorite ? 'border-accent text-accent' : 'border-border hover:border-accent'
                   }`}
                 >
@@ -280,7 +321,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               </div>
 
               {/* Policies */}
-              <div className="grid grid-cols-3 gap-4 py-6 border-y text-center text-sm">
+              <div className="grid grid-cols-3 gap-2 md:gap-4 py-6 border-y text-center text-xs md:text-sm">
                 <div>
                   <div className="text-lg mb-1">🚚</div>
                   <p className="text-muted-foreground">Free shipping on orders above ₹2000</p>
@@ -302,18 +343,18 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-32 pt-16 border-t"
+            className="mt-20 md:mt-32 pt-12 md:pt-16 border-t"
           >
-            <h2 className="text-4xl font-heading font-bold mb-8">You May Also Like</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-8">You May Also Like</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="group cursor-pointer">
-                  <div className="h-64 bg-secondary mb-4 flex items-center justify-center">
+                <motion.div key={i} className="group cursor-pointer" whileHover={{ y: -5 }}>
+                  <div className="h-48 md:h-64 bg-secondary mb-4 flex items-center justify-center">
                     <span className="text-muted-foreground">Product {i}</span>
                   </div>
                   <h3 className="font-heading font-bold group-hover:text-accent">Related Product {i}</h3>
                   <p className="text-lg font-bold mt-2">₹{999 + i * 300}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>

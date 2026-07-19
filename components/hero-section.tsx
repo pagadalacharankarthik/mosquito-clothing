@@ -46,6 +46,10 @@ export default function HeroSection() {
             custom={1}
             variants={textVariants}
             className="text-6xl md:text-8xl lg:text-9xl font-heading font-bold tracking-tighter leading-none text-accent"
+            style={{
+              textShadow: '2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.2)',
+              WebkitTextStroke: '1px #000',
+            }}
           >
             TO FOLLOW
           </motion.h1>

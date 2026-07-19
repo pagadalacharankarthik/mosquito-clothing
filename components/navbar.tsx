@@ -36,9 +36,9 @@ export default function Navbar() {
   }, [])
 
   const menuItems = [
+    { label: 'Home', href: '/' },
     { label: 'Shop', href: '/shop' },
     { label: 'Collections', href: '/collections' },
-    { label: 'New Arrivals', href: '/new-arrivals' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
   ]
@@ -132,26 +132,44 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden pb-4"
+            className="md:hidden pb-4 border-t border-border"
           >
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-2 pt-4">
               {menuItems.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <span className="text-sm font-medium block py-2 hover:text-accent transition-colors">
+                <Link key={item.href} href={item.href} onClick={() => setIsOpen(false)}>
+                  <motion.span 
+                    className="text-sm font-medium block py-2 px-2 hover:text-accent hover:bg-secondary transition-colors rounded"
+                    whileHover={{ x: 4 }}
+                  >
                     {item.label}
-                  </span>
+                  </motion.span>
                 </Link>
               ))}
-              <div className="flex items-center space-x-4 pt-4 border-t border-border">
-                <button className="p-2" aria-label="Search">
+              <div className="flex items-center space-x-2 pt-4 border-t border-border">
+                <motion.button 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-2 hover:text-accent hover:bg-secondary rounded transition-colors" 
+                  aria-label="Search"
+                >
                   <Search size={20} />
-                </button>
-                <button className="p-2" aria-label="Wishlist">
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-2 hover:text-accent hover:bg-secondary rounded transition-colors" 
+                  aria-label="Wishlist"
+                >
                   <Heart size={20} />
-                </button>
-                <button className="p-2" aria-label="Cart">
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-2 hover:text-accent hover:bg-secondary rounded transition-colors" 
+                  aria-label="Cart"
+                >
                   <ShoppingBag size={20} />
-                </button>
+                </motion.button>
               </div>
             </div>
           </motion.div>

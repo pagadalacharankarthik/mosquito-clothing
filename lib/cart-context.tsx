@@ -3,19 +3,21 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 
 export interface CartItem {
-  id: number
+  id: string
   name: string
   price: number
   quantity: number
   size: string
   color: string
+  image?: string
 }
 
 interface CartContextType {
   items: CartItem[]
+  addToCart: (item: CartItem) => void
   addItem: (item: CartItem) => void
-  removeItem: (id: number) => void
-  updateQuantity: (id: number, quantity: number) => void
+  removeItem: (id: string) => void
+  updateQuantity: (id: string, quantity: number) => void
   clearCart: () => void
   total: number
   itemCount: number
@@ -59,13 +61,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     })
   }
 
-  const removeItem = (id: number) => {
+  const removeItem = (id: string) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id))
   }
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (id: string, quantity: number) => {
+    if (quantity <= 0) {
+      removeItem(id)
+      return
+    }
     setItems((prevItems) =>
-      prevItems.map((item) => (item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item))
+      prevItems.map((item) => (item.id === id ? { ...item, quantity } : item))
     )
   }
 
@@ -80,6 +86,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     <CartContext.Provider
       value={{
         items,
+        addToCart: addItem,
         addItem,
         removeItem,
         updateQuantity,
