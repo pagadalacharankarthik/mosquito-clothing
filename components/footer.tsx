@@ -78,14 +78,20 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <h4 className="font-heading font-bold mb-4 text-accent uppercase text-sm tracking-wide">
+              <h4 
+                className="font-heading font-bold mb-4 text-accent uppercase text-sm tracking-wide"
+                style={{
+                  textShadow: '1px 1px 0 #000, 2px 2px 0 rgba(0,0,0,0.3)',
+                  WebkitTextStroke: '0.5px #000',
+                }}
+              >
                 {category}
               </h4>
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href}>
-                      <span className="text-sm text-gray-400 hover:text-accent transition-colors">
+                      <span className="text-sm text-white hover:text-accent transition-colors font-medium">
                         {link.label}
                       </span>
                     </Link>

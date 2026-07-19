@@ -2,6 +2,8 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Bebas_Neue, Inter } from 'next/font/google'
 import { CartProvider } from '@/lib/cart-context'
+import { DrawerProvider } from '@/lib/drawer-context'
+import AppWrapper from '@/components/app-wrapper'
 import './globals.css'
 
 const bebasNeue = Bebas_Neue({
@@ -52,7 +54,11 @@ export default function RootLayout({
     <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`}>
       <body className="font-body antialiased bg-background text-foreground">
         <CartProvider>
-          {children}
+          <DrawerProvider>
+            <AppWrapper>
+              {children}
+            </AppWrapper>
+          </DrawerProvider>
         </CartProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

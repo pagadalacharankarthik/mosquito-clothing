@@ -8,6 +8,8 @@ import Footer from '@/components/footer'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useCart } from '@/lib/cart-context'
+import { useDrawer } from '@/lib/drawer-context'
+import MobileNav from '@/components/mobile-nav'
 
 const products: any = {
   '1': {
@@ -94,6 +96,8 @@ export default function ProductDetailPage() {
 
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
 
+  const { openCart } = useDrawer()
+
   const handleAddToCart = () => {
     if (!selectedSize) {
       alert('Please select a size')
@@ -115,12 +119,13 @@ export default function ProductDetailPage() {
       image: '/placeholder.jpg',
     })
     
-    alert('Item added to cart!')
+    openCart()
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 md:pb-0">
       <Navbar />
+      <MobileNav />
 
       <motion.main
         initial={{ opacity: 0 }}
@@ -296,10 +301,30 @@ export default function ProductDetailPage() {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsFavorite(!isFavorite)}
+                  onClick={() => {
+                    const newFavorite = !isFavorite
+                    setIsFavorite(newFavorite)
+                    
+                    if (newFavorite) {
+                      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]')
+                      if (!wishlist.find((item: any) => item.id === product.id)) {
+                        wishlist.push({
+                          id: product.id,
+                          name: product.name,
+                          price: product.price,
+                          image: product.images[0],
+                        })
+                        localStorage.setItem('wishlist', JSON.stringify(wishlist))
+                      }
+                    } else {
+                      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]')
+                      localStorage.setItem('wishlist', JSON.stringify(wishlist.filter((item: any) => item.id !== product.id)))
+                    }
+                  }}
                   className={`p-3 md:p-4 border-2 transition-all ${
                     isFavorite ? 'border-accent text-accent' : 'border-border hover:border-accent'
                   }`}
+                  title="Add to wishlist"
                 >
                   <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
                 </motion.button>
