@@ -51,7 +51,7 @@ const products: any = {
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = products[params.id]
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
+  const [selectedColor, setSelectedColor] = useState<string>(product?.colors?.[0] || 'Black')
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
   const [mainImageIndex, setMainImageIndex] = useState(0)
