@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import { Award, Users, Leaf, Zap } from 'lucide-react'
@@ -39,13 +40,30 @@ export default function AboutPage() {
         transition={{ duration: 0.8 }}
         className="pt-32 pb-20"
       >
+        {/* Logo Section */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-20 flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="relative w-32 h-32 md:w-40 md:h-40"
+          >
+            <Image
+              src="/mosquito-logo.svg"
+              alt="MOSQUITO Logo"
+              fill
+              className="object-contain"
+            />
+          </motion.div>
+        </div>
+
         {/* Hero Section */}
         <div className="max-w-7xl mx-auto px-4 md:px-8 mb-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 max-w-4xl"
+            className="space-y-6 max-w-4xl text-center mx-auto"
           >
             <h1 className="text-6xl md:text-7xl font-heading font-bold tracking-tight">
               About MOSQUITO

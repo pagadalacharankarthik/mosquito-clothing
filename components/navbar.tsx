@@ -6,11 +6,15 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Menu, X, Search, Heart, ShoppingBag } from 'lucide-react'
 import SearchModal from './search'
+import { useCart } from '@/lib/cart-context'
+import { useDrawer } from '@/lib/drawer-context'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const { itemCount } = useCart()
+  const { openCart } = useDrawer()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +61,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
-          <motion.div whileHover={{ scale: 1.05 }} className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28">
+          <motion.div whileHover={{ scale: 1.05 }} className="relative w-12 h-12 md:w-14 md:h-14">
             <Image
               src="/mosquito-logo.svg"
               alt="MOSQUITO Logo"
@@ -105,10 +109,20 @@ export default function Navbar() {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            className="p-2 hover:text-accent transition-colors"
+            onClick={openCart}
+            className="p-2 hover:text-accent transition-colors relative"
             aria-label="Cart"
           >
             <ShoppingBag size={20} />
+            {itemCount > 0 && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute top-0 right-0 bg-accent text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center"
+              >
+                {itemCount}
+              </motion.span>
+            )}
           </motion.button>
         </div>
 
