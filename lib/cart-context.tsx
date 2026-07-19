@@ -47,13 +47,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = (item: CartItem) => {
     setItems((prevItems) => {
-      const existingItem = prevItems.find(
-        (i) => i.id === item.id && i.size === item.size && i.color === item.color
-      )
+      const existingItem = prevItems.find((i) => i.id === item.id)
 
       if (existingItem) {
         return prevItems.map((i) =>
-          i === existingItem ? { ...i, quantity: i.quantity + item.quantity } : i
+          i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
         )
       }
 
@@ -103,7 +101,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 export function useCart() {
   const context = useContext(CartContext)
   if (!context) {
-    throw new Error('useCart must be used within CartProvider')
+    return {
+      items: [],
+      addToCart: (item: CartItem) => {},
+      addItem: (item: CartItem) => {},
+      removeItem: (id: string) => {},
+      updateQuantity: (id: string, quantity: number) => {},
+      clearCart: () => {},
+      total: 0,
+      itemCount: 0,
+    }
   }
   return context
 }

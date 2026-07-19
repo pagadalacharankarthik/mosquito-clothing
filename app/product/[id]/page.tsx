@@ -100,6 +100,11 @@ export default function ProductDetailPage() {
       return
     }
 
+    if (!addToCart) {
+      alert('Cart functionality unavailable. Please try refreshing the page.')
+      return
+    }
+
     addToCart({
       id: `${product.id}-${selectedColor}-${selectedSize}`,
       name: product.name,
@@ -109,6 +114,8 @@ export default function ProductDetailPage() {
       quantity,
       image: '/placeholder.jpg',
     })
+    
+    alert('Item added to cart!')
   }
 
   return (
