@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Home, Search, Heart, ShoppingBag, User } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
+import { useWishlist } from '@/lib/wishlist-context'
 import { useState } from 'react'
 
 interface MobileNavProps {
@@ -12,6 +13,7 @@ interface MobileNavProps {
 
 export default function MobileNav({ onSearchClick }: MobileNavProps) {
   const { itemCount } = useCart()
+  const { itemCount: wishlistCount } = useWishlist()
   const [active, setActive] = useState('home')
 
   const navItems = [
@@ -72,6 +74,17 @@ export default function MobileNav({ onSearchClick }: MobileNavProps) {
                     className="absolute top-0 right-0 w-5 h-5 bg-accent text-black rounded-full flex items-center justify-center text-xs font-bold"
                   >
                     {itemCount > 9 ? '9+' : itemCount}
+                  </motion.div>
+                )}
+
+                {/* Wishlist Badge */}
+                {item.id === 'wishlist' && wishlistCount > 0 && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute top-0 right-0 w-5 h-5 bg-accent text-black rounded-full flex items-center justify-center text-xs font-bold"
+                  >
+                    {wishlistCount > 9 ? '9+' : wishlistCount}
                   </motion.div>
                 )}
               </motion.div>

@@ -7,28 +7,15 @@ import Link from 'next/link'
 import { Heart, ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import MobileNav from '@/components/mobile-nav'
+import { useWishlist } from '@/lib/wishlist-context'
 
 export default function WishlistPage() {
-  const [wishlist, setWishlist] = useState<any[]>([])
+  const { items: wishlist, removeFromWishlist } = useWishlist()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    const savedWishlist = localStorage.getItem('wishlist')
-    if (savedWishlist) {
-      try {
-        setWishlist(JSON.parse(savedWishlist))
-      } catch (e) {
-        console.error('[v0] Error loading wishlist:', e)
-      }
-    }
   }, [])
-
-  const removeFromWishlist = (productId: string) => {
-    const updated = wishlist.filter((item) => item.id !== productId)
-    setWishlist(updated)
-    localStorage.setItem('wishlist', JSON.stringify(updated))
-  }
 
   if (!mounted) return null
 

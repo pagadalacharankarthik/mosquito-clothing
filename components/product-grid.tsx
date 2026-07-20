@@ -21,7 +21,7 @@ const allProducts = [
     price: 999,
     category: 'Oversized Tees',
     colors: ['Black', 'White', 'Gray'],
-    image: '/placeholder.jpg',
+    image: '/product-1.png',
     isSale: false,
   },
   {
@@ -30,7 +30,7 @@ const allProducts = [
     price: 1299,
     category: 'Polo',
     colors: ['Black', 'Navy', 'Beige'],
-    image: '/placeholder.jpg',
+    image: '/product-2.png',
     isSale: true,
   },
   {
@@ -39,7 +39,7 @@ const allProducts = [
     price: 1999,
     category: 'Cargo Pants',
     colors: ['Black', 'Beige'],
-    image: '/placeholder.jpg',
+    image: '/product-3.png',
     isSale: false,
   },
   {
@@ -48,7 +48,7 @@ const allProducts = [
     price: 2299,
     category: 'Jeans',
     colors: ['Black', 'Navy'],
-    image: '/placeholder.jpg',
+    image: '/product-4.png',
     isSale: true,
   },
   {
@@ -57,7 +57,7 @@ const allProducts = [
     price: 2499,
     category: 'Hoodies',
     colors: ['Black', 'Gray', 'Beige'],
-    image: '/placeholder.jpg',
+    image: '/product-5.png',
     isSale: false,
   },
   {
@@ -66,7 +66,7 @@ const allProducts = [
     price: 3999,
     category: 'Jackets',
     colors: ['Black', 'White'],
-    image: '/placeholder.jpg',
+    image: '/product-6.png',
     isSale: true,
   },
   {
@@ -75,7 +75,7 @@ const allProducts = [
     price: 1799,
     category: 'Shirts',
     colors: ['Black', 'White', 'Gray'],
-    image: '/placeholder.jpg',
+    image: '/product-7.png',
     isSale: false,
   },
   {
@@ -84,7 +84,7 @@ const allProducts = [
     price: 1599,
     category: 'Shirts',
     colors: ['Beige', 'White'],
-    image: '/placeholder.jpg',
+    image: '/product-8.png',
     isSale: false,
   },
 ]

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Heart, Share2, ShoppingBag } from 'lucide-react'
 import Navbar from '@/components/navbar'
@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useCart } from '@/lib/cart-context'
 import { useDrawer } from '@/lib/drawer-context'
+import { useWishlist } from '@/lib/wishlist-context'
 import MobileNav from '@/components/mobile-nav'
 
 const products: any = {
@@ -20,7 +21,7 @@ const products: any = {
     category: 'Oversized Tees',
     description:
       'Premium quality oversized t-shirt made from 100% organic cotton. Perfect for everyday wear with a comfortable, relaxed fit.',
-    images: ['/placeholder.jpg', '/placeholder.jpg', '/placeholder.jpg', '/placeholder.jpg'],
+    images: ['/product-1.png', '/product-1.png', '/product-1.png', '/product-1.png'],
     colors: ['Black', 'White', 'Gray'],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     inStock: true,
@@ -42,7 +43,7 @@ const products: any = {
     category: 'Polo',
     description:
       'Timeless polo shirt designed for modern style. Quality fabric with excellent drape and comfort.',
-    images: ['/placeholder.jpg', '/placeholder.jpg'],
+    images: ['/product-2.png', '/product-2.png'],
     colors: ['Black', 'Navy', 'Beige'],
     sizes: ['S', 'M', 'L', 'XL'],
     inStock: true,
@@ -57,7 +58,7 @@ const products: any = {
     originalPrice: 2999,
     category: 'Cargo Pants',
     description: 'Premium cargo pants with multiple pockets and comfortable fit.',
-    images: ['/placeholder.jpg', '/placeholder.jpg'],
+    images: ['/product-3.png', '/product-3.png'],
     colors: ['Black', 'Khaki', 'Olive'],
     sizes: ['S', 'M', 'L', 'XL'],
     inStock: true,
@@ -70,6 +71,7 @@ const products: any = {
 export default function ProductDetailPage() {
   const params = useParams()
   const { addToCart } = useCart()
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
   const productId = params.id as string
   const product = products[productId]
 
@@ -78,6 +80,12 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
   const [mainImageIndex, setMainImageIndex] = useState(0)
+
+  useEffect(() => {
+    if (product) {
+      setIsFavorite(isInWishlist(product.id))
+    }
+  }, [product, isInWishlist])
 
   if (!product) {
     return (
@@ -306,19 +314,14 @@ export default function ProductDetailPage() {
                     setIsFavorite(newFavorite)
                     
                     if (newFavorite) {
-                      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]')
-                      if (!wishlist.find((item: any) => item.id === product.id)) {
-                        wishlist.push({
-                          id: product.id,
-                          name: product.name,
-                          price: product.price,
-                          image: product.images[0],
-                        })
-                        localStorage.setItem('wishlist', JSON.stringify(wishlist))
-                      }
+                      addToWishlist({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.images[0],
+                      })
                     } else {
-                      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]')
-                      localStorage.setItem('wishlist', JSON.stringify(wishlist.filter((item: any) => item.id !== product.id)))
+                      removeFromWishlist(product.id)
                     }
                   }}
                   className={`p-3 md:p-4 border-2 transition-all ${

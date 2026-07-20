@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Bebas_Neue, Inter } from 'next/font/google'
 import { CartProvider } from '@/lib/cart-context'
 import { DrawerProvider } from '@/lib/drawer-context'
+import { WishlistProvider } from '@/lib/wishlist-context'
 import AppWrapper from '@/components/app-wrapper'
 import './globals.css'
 
@@ -53,13 +54,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`}>
       <body className="font-body antialiased bg-background text-foreground">
-        <CartProvider>
-          <DrawerProvider>
-            <AppWrapper>
-              {children}
-            </AppWrapper>
-          </DrawerProvider>
-        </CartProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <DrawerProvider>
+              <AppWrapper>
+                {children}
+              </AppWrapper>
+            </DrawerProvider>
+          </CartProvider>
+        </WishlistProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
